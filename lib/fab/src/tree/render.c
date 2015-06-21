@@ -188,6 +188,8 @@ void shade_pixels8(unsigned count, float (*normals)[3],
     {
         for (int b=0; b < 3; ++b)
         {
+            if (isnan(normals[a][b]))
+                printf("Got NaN in normals!\n");
             out[js[a]][is[a]][b] = normals[a][b]*127 + 128;
         }
     }
