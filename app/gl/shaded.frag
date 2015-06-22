@@ -40,7 +40,7 @@ void main() {
         discard;
     }
 
-    gl_FragColor = shade(texture2D(shaded_tex, texture_coord));
+    gl_FragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f); //shade(texture2D(shaded_tex, texture_coord));
 
     // Due to the way that Qt renders a GraphicsScene
     // (with OpenGL acceleration), we're limited to the
