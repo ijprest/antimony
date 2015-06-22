@@ -36,6 +36,7 @@ void RenderImage::render(Shape *shape)
 {
     depth.fill(0x000000);
 
+    qDebug() << "RenderImage: beginning render";
     uint16_t* d16(new uint16_t[depth.width() * depth.height()]);
     uint16_t** d16_rows(new uint16_t*[depth.height()]);
     uint8_t (*s8)[3] = new uint8_t[depth.width() * depth.height()][3];
@@ -55,10 +56,13 @@ void RenderImage::render(Shape *shape)
             .nk=uint32_t(fmax(1, (shape->bounds.zmax -
                                   shape->bounds.zmin) * scale))
     };
+    qDebug() << "RenderImage: Building arrays";
 
     build_arrays(&r, shape->bounds.xmin, shape->bounds.ymin, shape->bounds.zmin,
                      shape->bounds.xmax, shape->bounds.ymax, shape->bounds.zmax);
+    qDebug() << "RenderImage: Making depth";
     render16(shape->tree.get(), r, d16_rows, &halt_flag, &processEvents);
+    qDebug() << "RenderImage: Making shaded";
     shaded8(shape->tree.get(), r, d16_rows, s8_rows, &halt_flag, &processEvents);
 
     free_arrays(&r);
@@ -85,6 +89,7 @@ void RenderImage::render(Shape *shape)
     delete [] d16;
     delete [] d16_rows;
 
+    qDebug() << "RenderImage: done rendering";
 }
 
 void RenderImage::applyGradient(bool direction)

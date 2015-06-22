@@ -25,6 +25,8 @@ RenderWorker::RenderWorker(Datum* datum, Viewport* viewport)
     connect(datum, &Datum::connectionChanged,
             this, &RenderWorker::onDatumChanged);
 
+    qDebug() << "RenderWorker: Making RenderWorker for" << datum;
+
     // If the Datum or Viewport is destroyed, delete this worker if a task
     // isn't running.  If a task is running, the deletion criterion will be
     // checked on task completion and the worker will be deleted then.
@@ -85,8 +87,10 @@ bool RenderWorker::hasNoOutput()
 
 void RenderWorker::onDatumChanged()
 {
+    qDebug() << "RenderWorker: Datum changed!";
     if (datum && datum->getValid() && datum->getValue() && hasNoOutput())
     {
+        qDebug() << "RenderWorker: Making new RenderTask";
         if (next)
             next->deleteLater();
 

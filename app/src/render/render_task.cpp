@@ -19,6 +19,7 @@ RenderTask::RenderTask(PyObject *s, QMatrix4x4 matrix,
       scale(scale), refinement(refinement), image(NULL),
       is_empty(false)
 {
+    qDebug() << "RenderTask: Making renderTask with matrix" << matrix;
     Py_INCREF(shape);
 }
 
@@ -63,18 +64,26 @@ void RenderTask::render()
 
     Q_ASSERT(get_shape.check());
     Shape s = get_shape();
+    qDebug() << "RenderTask: Calling RenderTask::render";
 
     if (!isinf(s.bounds.xmin) && !isinf(s.bounds.xmax) &&
         !isinf(s.bounds.xmin) && !isinf(s.bounds.xmax))
     {
         if (isinf(s.bounds.zmin) || isinf(s.bounds.zmax))
+        {
+            qDebug() << "RenderTask: Rendering in 2D";
             render2d(s);
+        }
         else
+        {
+            qDebug() << "RenderTask: Rendering in 3D";
             render3d(s);
+        }
         image->moveToThread(QApplication::instance()->thread());
     }
     else
     {
+        qDebug() << "RenderTask: Not rendering at all";
         is_empty = true;
     }
 
